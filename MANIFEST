@@ -5,4 +5,4 @@ MANIFEST
 README
 t/sleepy.t
 t/fail.t
-META.yml                                Module meta-data (added by MakeMaker)
+META.yml 

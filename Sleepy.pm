@@ -1,6 +1,6 @@
 package WWW::Mechanize::Sleepy;
 
-our $VERSION = 0.4;
+our $VERSION = 0.5;
 
 use strict;
 use warnings;
@@ -23,6 +23,10 @@ WWW::Mechanize::Sleepy - A Sleepy Mechanize Agent
     my $a = WWW::Mechanize::Sleepy->new( sleep => '5..20' );
     $a->get( 'http://www.ctw.org' );
 
+    # don't sleep at all
+    my $a = WWW::Mechanize::Sleepy->new();
+    $a->get( 'http://www.ctw.org' );
+
 =head1 DESCRIPTION
 
 Sometimes when testing the behavior of a webserver it is important to be able
@@ -39,7 +43,7 @@ which accepts a few additional parameters.
 =head2 new()
 
 The constructor which acts just like the WWW::Mechanize constructor except
-you can pass it some extra parameters. 
+you can pass it an extra parameter. 
 
 =over 4
 
@@ -54,7 +58,104 @@ amount of time within that range.
 
     my $a = WWW::Mechanize::Sleepy->new( sleep => '5..20' );
 
+If you would like to have a non sleeping WWW::Mechanize object, you can 
+simply not pass in the sleep paramter.
+
+    my $a = WWW::Mechanize::Sleepy->new();
+
+=back
+
+Note: since WWW::Mechanize::Sleepy subclasses WWW::Mechanize, which subclasses
+LWP::UserAgent, you can pass in LWP::UserAgent::new() options to
+WWW::Mechanize::Sleepy::new().
+
+    my $a = WWW::Mechanize::Sleepy->new( 
+	agent	    => 'foobar agent',
+	timeout	    => 100
+    );
+
 =cut
+
+sub new {
+    my $class = shift;
+    my %parms = @_;
+    my $sleep = 0;
+    if ( exists( $parms{ sleep } ) ) { 
+	$sleep = $parms{ sleep };
+	_sleepCheck( $sleep );
+	delete( $parms{ sleep } );
+    }
+    my $self = $class->SUPER::new( %parms );
+    $self->{ Sleepy_Time } = $sleep;
+    return( $self );
+}
+
+=head2 sleep()
+
+If you want to get or set your object's sleep value on the fly use sleep().
+
+   my $a = WWW::Mechanize::Sleepy->new( sleep => '1..3' );
+   ...
+   print "currently sleeping ", $a->sleep(), " seconds\n";
+   $a->sleep( '4..6' );
+
+If you want to make your WWW::Mechanize::Sleepy object no longer sleepy just
+set to 0.
+
+    $a->sleep( 0 );
+
+=cut
+
+sub sleep {
+    my ( $self, $arg ) = @_;
+    if ( defined( $arg ) ) { 
+	_sleepCheck( $arg );
+	$self->{ Sleepy_Time } = $arg;
+    }
+    return( $self->{ Sleepy_Time } );
+}
+
+sub get {
+    my $self = shift;
+    $self->_sleep();
+    $self->SUPER::get( @_ );
+}
+
+sub back {
+    my $self = shift;
+    $self->_sleep();
+    $self->SUPER::back( @_ );
+}
+
+sub request {
+    my $self = shift;
+    $self->_sleep();
+    $self->SUPER::request( @_ );
+}
+
+sub _sleep {
+    my $self = shift;
+    return( 1 ) if $self->{ Sleepy_Time } eq '0';
+    my $sleep;
+    if ( $self->{ Sleepy_Time } =~ /^(\d+)\.\.(\d+)$/ ) { 
+	$sleep = int( rand( $2 - $1 ) ) + $1;
+    } else { 
+	$sleep = $self->{ Sleepy_Time };
+    }
+    CORE::sleep( $sleep );
+    return( 1 );
+}
+
+sub _sleepCheck {
+    my $sleep = shift;
+    croak( "sleep parameter must be an integer or a range i1..i2" )
+	if ( $sleep !~ /^(\d+)|(\d+\.\.\d+)$/ );
+    if ( $sleep =~ /(\d+)\.\.(\d+)/ and $1 >= $2 ) { 
+	croak( "sleep range (i1..i2) must have i1 < i2" );
+    }
+    return( 1 );
+}
+
 
 =head1 AUTHORS
 
@@ -79,49 +180,4 @@ the same terms as Perl itself.
 
 =cut
 
-sub new {
-    my $class = shift;
-    my %parms = @_;
-    croak( "must supply 'sleep' parameter" )
-	if ( ! exists( $parms{ sleep } ) );
-    my $sleep = $parms{ sleep };
-    croak( "sleep parameter must be an integer or a range i1..i2" )
-	if ( $sleep !~ /^(\d+)|(\d+\.\.\d+)$/ );
-    if ( $sleep =~ /(\d+)\.\.(\d+)/ and $1 >= $2 ) { 
-	croak( "sleep range (i1..i2) must have i1 < i2" );
-    }
-    delete( $parms{ sleep } );
-    my $self = $class->SUPER::new( %parms );
-    $self->{ Sleepy_Time } = $sleep;
-    return( $self );
-}
-
-sub get {
-    my $self = shift;
-    $self->_sleep();
-    $self->SUPER::get( @_ );
-}
-
-sub back {
-    my $self = shift;
-    $self->_sleep();
-    $self->SUPER::back( @_ );
-}
-
-sub request {
-    my $self = shift;
-    $self->_sleep();
-    $self->SUPER::request( @_ );
-}
-
-sub _sleep {
-    my $self = shift;
-    my $sleep;
-    if ( $self->{ Sleepy_Time } =~ /^(\d+)\.\.(\d+)$/ ) { 
-	$sleep = int( rand( $2 - $1 ) ) + $1;
-    } else { 
-	$sleep = $self->{ Sleepy_Time };
-    }
-    sleep( $sleep );
-}
-
+1;

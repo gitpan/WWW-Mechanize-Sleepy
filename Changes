@@ -1,5 +1,12 @@
 Revision history for Perl extension WWW::Mechanize::SleepyH
 
+0.5   Sun Aug 31 12:41:50 2003
+	- constructor now allows you to not pass in anything if you want a 
+	  vanilla WWW::Mechanize object (thanks Nicholas Dronen).
+
+0.4   Tue Aug 26 14:00:32 2003
+	- added trailing slash to test url
+
 0.3   Tue Aug 26 10:24:09 2003
 	- use http://www.google.com/intl/en/ for tests
 
