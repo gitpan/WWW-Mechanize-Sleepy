@@ -1,6 +1,6 @@
 package WWW::Mechanize::Sleepy;
 
-our $VERSION = 0.3;
+our $VERSION = 0.4;
 
 use strict;
 use warnings;

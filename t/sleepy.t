@@ -5,7 +5,7 @@ use Test::More tests => 21;
 use_ok(  'WWW::Mechanize::Sleepy' );
 
 $a = WWW::Mechanize::Sleepy->new( sleep => 3 );
-timed( '$a->get( "http://www.google.com/intl/en" )', 3 );
+timed( '$a->get( "http://www.google.com/intl/en/" )', 3 );
 timed( '$a->follow_link( text => "Images" )', 3 );
 timed( '$a->back()', 3 );
 timed( '$a->reload()', 3 );
