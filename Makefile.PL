@@ -1,7 +1,9 @@
 use ExtUtils::MakeMaker;
 
 print 
-    "\nNOTE: for 'make test' to work you must be connected to the Internet\n\n";
+    "\nIf you are testing:\n",
+    "- for 'make test' to work you must be connected to the Internet\n",
+    "- expect 'make test' to take some time since it tests sleepiness\n\n";
 
 WriteMakefile(
     NAME		=> 'WWW::Mechanize::Sleepy',

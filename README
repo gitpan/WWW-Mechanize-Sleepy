@@ -1,12 +1,13 @@
-HTML::DublinCore version 0.02
+WWW::Mechanize::Sleepy
 ====================
 
-A module for extracting Dublin Core metadata from HTML. Dublin Core is a 15
-element metadata set for describing electronic resources. For more information
-about Dublin Core see http://www.dublincore.org/documents/dces/, and for 
-more information about using HTML::DublinCore see the perldoc.
-
 INSTALLATION
+
+Sometimes when testing the behavior of a webserver it is important to be able
+to space out your requests in order to simulate a person reading, thinking (or 
+sleeping) at the keyboard.
+
+WWW::Mechanize::Sleepy subclasses WWW::Mechanize to provide pauses between your server requests. Use it just like you would use WWW::Mechanize.
 
 To install this module type the following:
 
@@ -19,7 +20,7 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-HTML::Parser
+WWW::Mechanize
 
 COPYRIGHT AND LICENCE
 
