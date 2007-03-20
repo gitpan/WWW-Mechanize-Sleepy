@@ -1,6 +1,6 @@
 package WWW::Mechanize::Sleepy;
 
-our $VERSION = 0.5;
+our $VERSION = 0.6;
 
 use strict;
 use warnings;
@@ -131,6 +131,12 @@ sub request {
     my $self = shift;
     $self->_sleep();
     $self->SUPER::request( @_ );
+}
+
+sub reload {
+    my $self = shift;
+    $self->_sleep();
+    $self->SUPER::reload( @_ );
 }
 
 sub _sleep {

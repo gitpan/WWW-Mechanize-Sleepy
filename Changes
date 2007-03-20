@@ -1,5 +1,8 @@
 Revision history for Perl extension WWW::Mechanize::SleepyH
 
+0.6   Tue Mar 20 09:44:05 EDT 2007
+        - updated to work with WWW::Mechanize 1.86 - thanks alexchorny@gmail.com
+
 0.5   Sun Aug 31 12:41:50 2003
 	- constructor now allows you to not pass in anything if you want a 
 	  vanilla WWW::Mechanize object (thanks Nicholas Dronen).

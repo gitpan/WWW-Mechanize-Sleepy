@@ -8,7 +8,7 @@ print
 WriteMakefile(
     NAME		=> 'WWW::Mechanize::Sleepy',
     VERSION_FROM	=> 'Sleepy.pm', 
-    PREREQ_PM		=> { WWW::Mechanize => 0.58 },
+    PREREQ_PM		=> { WWW::Mechanize => 1.06 },
     ABSTRACT_FROM	=> 'Sleepy.pm', 
     AUTHOR		=> 'Ed Summers <ehs@pobox.com>',
 );
