@@ -1,6 +1,6 @@
 package WWW::Mechanize::Sleepy;
 
-our $VERSION = 0.6;
+our $VERSION = 0.7;
 
 use strict;
 use warnings;
@@ -17,15 +17,15 @@ WWW::Mechanize::Sleepy - A Sleepy Mechanize Agent
    
     # sleep 5 seconds between requests
     my $a = WWW::Mechanize::Sleepy->new( sleep => 5 );
-    $a->get( 'http://www.ctw.org' );
+    $a->get( 'http://www.cpan.org' );
 
     # sleep between 5 and 20 seconds between requests
     my $a = WWW::Mechanize::Sleepy->new( sleep => '5..20' );
-    $a->get( 'http://www.ctw.org' );
+    $a->get( 'http://www.cpan.org' );
 
     # don't sleep at all
     my $a = WWW::Mechanize::Sleepy->new();
-    $a->get( 'http://www.ctw.org' );
+    $a->get( 'http://www.cpan.org' );
 
 =head1 DESCRIPTION
 
@@ -38,7 +38,7 @@ WWW::Mechanize::Sleepy subclasses WWW::Mechanize to provide pauses between your 
 =head1 METHODS
 
 All the methods are the same as WWW::Mechanize, except for the constructor
-which accepts a few additional parameters.
+which accepts an additional parameter.
 
 =head2 new()
 
@@ -53,7 +53,7 @@ An amount of time in seconds to sleep.
 
     my $a = WWW::Mechanize::Sleepy->new( sleep => 5 );
 
-Or a range of time to sleep to sleep within. Your robot will sleep a random
+Or a range of time to sleep within. Your robot will sleep a random
 amount of time within that range.
 
     my $a = WWW::Mechanize::Sleepy->new( sleep => '5..20' );
@@ -115,12 +115,6 @@ sub sleep {
     return( $self->{ Sleepy_Time } );
 }
 
-sub get {
-    my $self = shift;
-    $self->_sleep();
-    $self->SUPER::get( @_ );
-}
-
 sub back {
     my $self = shift;
     $self->_sleep();
@@ -163,13 +157,10 @@ sub _sleepCheck {
 }
 
 
-=head1 AUTHORS
+=head1 AUTHOR/MAINTAINER
 
-=over 4
-
-=item * Ed Summers <ehs@pobox.com>
-
-=back
+WWW::Mechanize::Sleepy was originally written in 2003 by Ed Summers (ehs@pobox.com).
+Since version 0.7 (September 2010) it has been maintained by Kostas Ntonas (kntonas@gmail.com).
 
 =head1 SEE ALSO
 

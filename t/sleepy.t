@@ -5,14 +5,14 @@ use Test::More tests => 25;
 use_ok(  'WWW::Mechanize::Sleepy' );
 
 $a = WWW::Mechanize::Sleepy->new( sleep => 3 );
-timed( '$a->get( "http://www.google.com/intl/en/" )', 3 );
+timed( '$a->get( "http://www.google.com/webhp?hl=en" )', 3 );
 timed( '$a->follow_link( text => "Images" )', 3 );
 timed( '$a->back()', 3 );
 timed( '$a->reload()', 3 );
 timed( '$a->submit()', 3 );
 
 $a = WWW::Mechanize::Sleepy->new( sleep => '5..10' );
-timed( '$a->get( "http://www.google.com/intl/en/" )', '5..10' );
+timed( '$a->get( "http://www.google.com/webhp?hl=en" )', '5..10' );
 timed( '$a->follow_link( text => "Images" )', '5..10' );
 timed( '$a->back()', '5..10' );
 timed( '$a->reload()', '5..10' );
@@ -45,7 +45,6 @@ sub timed {
 	    "$cmd : slept at least $expected seconds" 
 	);
     }
-
 }
 
 
